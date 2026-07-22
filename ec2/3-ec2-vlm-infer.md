@@ -169,6 +169,7 @@ docker run --rm -it --gpus all --shm-size=16g \
   -v $(pwd):/work -w /work \
   -v /opt/dlami/nvme/hf-cache:/root/.cache/huggingface \
   -e PYTHONUNBUFFERED=1 \
+  -e HF_HUB_ENABLE_HF_TRANSFER=1 \
   --entrypoint python3 \
   vllm/vllm-openai:v0.6.6.post1 \
   simple_infer.py
