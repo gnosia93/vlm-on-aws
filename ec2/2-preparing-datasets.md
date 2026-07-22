@@ -151,12 +151,6 @@ s3://<BUCKET>/finevideo/
 
 ## 모델 가중치 S3 저장하기 ##
 
-hf 토큰 및 환경변수를 설정한다ㅏ. 
-```
-export HF_TOKEN=hf_xxxxxxxxxxxx
-export HF_XET_HIGH_PERFORMANCE=1
-```
-
 허깅페이스 cli 로 OpenGVLab/InternVL3-78B 모델의 가중치를 다운로드 받고, S3 로 업로드 한다. 
 ```
 huggingface-cli download OpenGVLab/InternVL3-78B \
