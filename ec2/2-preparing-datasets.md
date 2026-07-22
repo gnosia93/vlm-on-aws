@@ -11,6 +11,13 @@
 
 ### 1. EC2 생성하기 ###
 
+```
+export ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
+export REGION=ap-northeast-2
+export SG_ID=$SG_ID
+export SUBNET_ID=$SUBNET_ID
+```
+
 데이터 준비 단계에서는 네트워크 대역폭과 디스크 성능이 좋은 CPU 인스턴스가 필요하다.
 * 인스턴스: m7g.4xlarge
 * 스토리지: 임시 스크래치용 로컬 NVMe 있는 타입이면 좋고, 없으면 EBS gp3 500GB~1TB.
