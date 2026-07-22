@@ -123,19 +123,17 @@ aws s3 cp "s3://${BUCKET}/finevideo/sports/manifest.jsonl" - \
 > BUCKET="vlm-data-499514681453-ap-northeast-2"
 > TOTAL_SHARDS="${TOTAL_SHARDS:?}"        # = Job completions 수
 > SHARD_INDEX="${JOB_COMPLETION_INDEX:?}" # K8s Indexed Job이 주입
-
+> 
 > manifest를 로컬로 받아서
 > aws s3 cp "s3://${BUCKET}/finevideo/sports/manifest.jsonl" /tmp/manifest.jsonl
-
+> 
 > 이 Pod가 맡을 줄만 골라 처리 (줄번호 % 전체shard == 내 index)
 > jq -r '.video_id' /tmp/manifest.jsonl \
 >   | awk -v n="${TOTAL_SHARDS}" -v k="${SHARD_INDEX}" 'NR % n == k' \
 >   | while read -r VIDEO_ID; do
 >       ./sample_frames.sh "${VIDEO_ID}"
 >     done
-> awk 'NR % n == k'가 핵심이에요. 전체 줄 중 "줄번호를 shard 수로 나눈 나머지가 내 인덱스인 것"만 골라서, Pod마다 겹치지 않게 나눠 처리합니다.
-
-
+> awk 'NR % n == k'가 핵심으로, 전체 줄 중 "줄번호를 shard 수로 나눈 나머지가 내 인덱스인 것"만 골라서, Pod마다 겹치지 않게 나눠 처리합니다.
 > ```
 
 
