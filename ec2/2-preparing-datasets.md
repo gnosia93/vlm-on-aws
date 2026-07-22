@@ -100,6 +100,9 @@ https://huggingface.co/datasets/HuggingFaceFV/finevideo 이동하여 Gate Model 
 ```
 pip install -U --user polars
 
+git clone https://github.com/gnosia93/vlm-on-eks.git
+cd vlm-on-eks/src
+
 python3 inspect_pl.py
 ```
 여기서 카테고리가 어디에 들어있는지 확인하고(예: sample["json"]["content_metadata"]["content_parent_category"]),
