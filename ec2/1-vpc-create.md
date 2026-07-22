@@ -83,6 +83,7 @@ echo "SG_ID=$SG_ID"
 
 # 내 IP에서만 SSH 허용 (권장)
 MY_IP=$(curl -s https://checkip.amazonaws.com)
+echo "MY_IP=$MY_IP"
 
 aws ec2 authorize-security-group-ingress --region $REGION \
   --group-id $SG_ID \
