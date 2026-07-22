@@ -127,6 +127,21 @@ echo "BUCKET: $BUCKET"
 tmux new -s ingest
 python3 prepare_finevideo.py
 ```
+[결과]
+```
+/home/ubuntu/.local/lib/python3.10/site-packages/huggingface_hub/constants.py:298: FutureWarning: The `HF_HUB_ENABLE_HF_TRANSFER` environment variable is deprecated as 'hf_transfer' is not used anymore. Please use `HF_XET_HIGH_PERFORMANCE` instead to enable high performance transfer with Xet. Visit https://huggingface.co/docs/huggingface_hub/package_reference/environment_variables#hfxethighperformance for more details.
+  warnings.warn(
+data/train-00000-of-01357.parquet: downloading bytes: ███████████████████████████████████████████████████████████████████████████████████████████████████████|  493MB, 30.5MB/s
+data/train-00000-of-01357.parquet: reconstructing file: 100%|███████████████████████████████████████████████████████████████████████████████████████|  494MB /  494MB, 33.8MB/s
+[shard 00000/10] sports 2개 업로드 (누적 2)
+data/train-00001-of-01357.parquet: downloading bytes: ███████████████████████████████████████████████████████████████████████████████████████████████████████|  565MB, 24.3MB/s
+data/train-00001-of-01357.parquet: reconstructing file: 100%|███████████████████████████████████████████████████████████████████████████████████████|  566MB /  566MB, 32.9MB/s
+[shard 00001/10] sports 4개 업로드 (누적 6)
+data/train-00002-of-01357.parquet: downloading bytes: ███████████████████████████████████████████████████████████████████████████████████████████████████████|  593MB, 27.1MB/s
+data/train-00002-of-01357.parquet: reconstructing file: 100%|███████████████████████████████████████████████████████████████████████████████████████|  593MB /  593MB, 36.0MB/s
+[shard 00002/10] sports 3개 업로드 (누적 9)
+```
+
 > [!TIP]
 > tmux(terminal multiplexer)는 터미널 세션을 백그라운드에서 계속 살아있게 유지해주는 도구입니다. 가장 큰 장점은 접속을 끊어도 그 안에서 돌던 프로세스가 죽지 않고 계속 실행된다는 점인데, 예를 들어 SSH로 서버에 붙어 작업하다가 연결이 끊기더라도 tmux 세션 안에서 돌던 작업은 중단되지 않고 그대로 이어집니다. 또한 나중에 tmux attach 명령으로 다시 접속하면 하던 화면 그대로 복귀할 수 있으며, 창을 분할하거나 여러 세션을 동시에 관리하는 것도 가능합니다.
 > ```
