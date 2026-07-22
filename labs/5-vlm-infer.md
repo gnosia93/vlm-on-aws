@@ -212,6 +212,16 @@ aws s3 ls s3://my-vlm-data-bucket/output/run-2026-07-22/shards/
 aws s3 cp s3://my-vlm-data-bucket/output/run-2026-07-22/shards/shard-00000.jsonl - | head -n 3
 ```
 
+* 작업 완료대기
+```
+# 두 샤드가 모두 성공(Complete)할 때까지 대기
+kubectl -n vlm-batch wait --for=condition=complete job/vlm-batch-infer --timeout=24h
+
+# 상태 요약
+kubectl -n vlm-batch get job vlm-batch-infer
+# COMPLETIONS 2/2 이면 완료
+```
+
 * 건수 확인
 ```
 # 입력 건수
