@@ -1,6 +1,6 @@
 ### 1. g7e.24xlarge 인스턴스 생성 ###
 
-* 1) 환경설정
+#### 1) 환경설정 ####
 ```
 REGION=ap-northeast-2
 KEY_NAME=my-key                 # 기존 EC2 키페어 이름
@@ -8,7 +8,7 @@ SG_ID=sg-xxxxxxxx               # SSH(22) 열린 보안그룹
 SUBNET_ID=subnet-xxxxxxxx       # GPU 용량 있는 AZ의 서브넷
 ```
 
-* 2) GPU 드라이버 포함 AMI 조회 (SSM)
+#### 2) GPU 드라이버 포함 AMI 조회 (SSM) ####
 NVIDIA 드라이버 + Docker가 들어간 Deep Learning Base GPU AMI(Ubuntu 22.04)를 조회한다.
 ```
 AMI_ID=$(aws ssm get-parameter \
@@ -19,8 +19,23 @@ AMI_ID=$(aws ssm get-parameter \
 echo $AMI_ID
 ```
 
-* 3) 인스턴스 생성
-
+#### 3) 인스턴스 생성 ####
+```
+aws ec2 run-instances \
+  --region $REGION \
+  --image-id $AMI_ID \
+  --instance-type g7e.24xlarge \
+  --key-name $KEY_NAME \
+  --security-group-ids $SG_ID \
+  --subnet-id $SUBNET_ID \
+  --block-device-mappings '[{"DeviceName":"/dev/sda1","Ebs":{"VolumeSize":600,"VolumeType":"gp3","Throughput":500,"Iops":6000,"DeleteOnTermination":true}}]' \
+  --iam-instance-profile Name=vlm-ec2-profile \
+  --instance-initiated-shutdown-behavior terminate \
+  --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=internvl3-infer}]' \
+  --count 1
+```
+* CPU 쿼터: g7e.24xlarge는 vCPU가 많아서(약 96개), 계정의 "Running On-Demand G instances" 쿼터가 부족하면 생성이 막힙니다. 처음 쓰는 계정이면 Service Quotas에서 상향 요청이 필요할 수 있어요.
+* 용량 부족(InsufficientInstanceCapacity): 최신 GPU라 AZ에 물량이 없을 수 있습니다. 이럴 땐 AZ를 바꾸거나, 온디맨드 용량 예약(ODCR)을 잡고 띄우는 게 확실합니다.
 
 
 
