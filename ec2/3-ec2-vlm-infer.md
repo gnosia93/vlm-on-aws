@@ -14,7 +14,7 @@
 
 
 ### 1. GPU 인스턴스 생성하기 ###
-인스턴스에 필요한 정보를 설정한다.  
+인스턴스에 필요한 정보를 설정한다. 여기서는 48GB * 8 장을 지원하는 g6e.48xlarge 를 선택한다.(VRAM 48GB * 8 = 384 GB)
 ```
 export ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
 export REGION=ap-northeast-2
