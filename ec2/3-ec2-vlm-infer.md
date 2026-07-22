@@ -5,7 +5,7 @@
 export REGION=ap-northeast-2
 export SG_ID=$SG_ID
 export SUBNET_ID=$SUBNET_ID
-export INSTANCE_TYPE="g6e.48xlarge"
+export INSTANCE_TYPE=g6e.48xlarge
 ```
 
 #### 2) GPU 드라이버 포함 AMI 조회 (SSM) ####
@@ -24,7 +24,7 @@ echo $AMI_ID
 aws ec2 run-instances \
   --region $REGION \
   --image-id $AMI_ID \
-  --instance-type g7e.24xlarge \
+  --instance-type $INSTANCE_TYPE \
   --key-name $KEY_NAME \
   --security-group-ids $SG_ID \
   --subnet-id $SUBNET_ID \
@@ -34,8 +34,8 @@ aws ec2 run-instances \
   --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=internvl3-infer}]' \
   --count 1
 ```
-* CPU 쿼터: g7e.24xlarge는 vCPU가 많아서(약 96개), 계정의 "Running On-Demand G instances" 쿼터가 부족하면 생성이 막힙니다. 처음 쓰는 계정이면 Service Quotas에서 상향 요청이 필요할 수 있어요.
-* 용량 부족(InsufficientInstanceCapacity): 최신 GPU라 AZ에 물량이 없을 수 있습니다. 이럴 땐 AZ를 바꾸거나, 온디맨드 용량 예약(ODCR)을 잡고 띄우는 게 확실합니다.
+* CPU 쿼터: g7e.24xlarge는 vCPU가 많아서(약 96개), 계정의 "Running On-Demand G instances" 쿼터가 부족하면 생성이 막힐수 있다. 처음 쓰는 계정이면 Service Quotas에서 상향 요청이 필요할 수 있다.
+* 용량 부족(InsufficientInstanceCapacity): 최신 GPU라 AZ에 물량이 없을 수 있다. 이럴 땐 AZ를 바꾸거나, 온디맨드 용량 예약(ODCR)을 잡고 띄우는 게 확실하다.
 
 
 #### 4) 퍼블릭 IP 확인 ####
