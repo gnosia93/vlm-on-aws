@@ -9,6 +9,7 @@ from __future__ import annotations
 from PIL import Image, ImageDraw
 from vllm import LLM, SamplingParams
 from transformers import AutoTokenizer
+import torch
 
 MODEL = "OpenGVLab/InternVL3-78B"
 
