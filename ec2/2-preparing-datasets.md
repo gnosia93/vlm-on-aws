@@ -92,7 +92,7 @@ pip install "datasets>=3.0" huggingface_hub hf_transfer boto3
 위에서 발급받은 hf 토큰을 아래와 같이 설정하고, 
 ```
 export HF_TOKEN=hf_xxxxxxxxxxxx
-export HF_HUB_ENABLE_HF_TRANSFER=1
+export HF_XET_HIGH_PERFORMANCE=1
 ```
 
 https://huggingface.co/datasets/HuggingFaceFV/finevideo 이동하여 Gate Model 에 대한 License 에 동의 한 후, 
