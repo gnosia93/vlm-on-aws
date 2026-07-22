@@ -75,7 +75,7 @@ aws iam put-role-policy \
 
 
 
-#### 3) 인스턴스 생성 ####
+#### 4) 인스턴스 생성 ####
 ```
 aws ec2 run-instances \
   --region $REGION \
@@ -94,14 +94,14 @@ aws ec2 run-instances \
 * 용량 부족(InsufficientInstanceCapacity): 최신 GPU라 AZ에 물량이 없을 수 있다. 이럴 땐 AZ를 바꾸거나, 온디맨드 용량 예약(ODCR)을 잡고 띄우는 게 확실하다.
 
 
-#### 4) 퍼블릭 IP 확인 ####
+#### 5) 퍼블릭 IP 확인 ####
 ```
 aws ec2 describe-instances --region $REGION \
   --filters "Name=tag:Name,Values=internvl3-infer" "Name=instance-state-name,Values=running" \
   --query 'Reservations[].Instances[].PublicIpAddress' --output text
 ```
 
-#### 5) SSH 접속 후 GPU 4장 확인 ####
+#### 6) SSH 접속 후 GPU 4장 확인 ####
 ```
 ssh -i my-key.pem ubuntu@<PUBLIC_IP>
 nvidia-smi          # RTX PRO 6000 4장이 보이면 정상
