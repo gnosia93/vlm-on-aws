@@ -1,5 +1,23 @@
+* Dockerfile (s5cmd 추가)
+```
+FROM vllm/vllm-openai:v0.6.6.post1
 
-[vlm-batch-config.yaml]
+WORKDIR /app
+
+# s5cmd (S3 고속 병렬 전송) 설치
+RUN curl -sL https://github.com/peak/s5cmd/releases/download/v2.2.2/s5cmd_2.2.2_Linux-64bit.tar.gz \
+      | tar -xz -C /usr/local/bin s5cmd \
+    && pip install --no-cache-dir pillow==11.0.0 requests==2.32.3 boto3==1.35.76
+
+COPY src/ /app/src/
+ENV PYTHONPATH=/app/src
+
+ENTRYPOINT []
+CMD ["python", "/app/src/run_worker.py"]
+```
+
+
+* vlm-batch-config.yaml
 ```
 apiVersion: v1
 kind: ConfigMap
@@ -34,7 +52,7 @@ data:
   DEFAULT_PROMPT: "이미지를 한국어로 자세히 설명해줘."
 ```
 
-[vlm-batch-infer.yaml]
+* vlm-batch-infer.yaml
 ```
 # InternVL3-78B 배치 인퍼런스: g7e 4-GPU 노드 2대에서 TP=4 파드 2개 동시 실행.
 apiVersion: batch/v1
