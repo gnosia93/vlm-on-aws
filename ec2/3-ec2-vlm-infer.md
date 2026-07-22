@@ -2,7 +2,6 @@
 
 ### 1. GPU 인스턴스 생성 ###
 
-#### 1) 환경설정 ####
 ```
 export ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
 export REGION=ap-northeast-2
@@ -12,18 +11,7 @@ export INSTANCE_TYPE=g6e.48xlarge
 ```
 가급적 g7e.24xlarge 인스턴스를 생성한다. 유효 수량이 없는 경우 g7e.48xlarge 또는 g6e.48xlarge 를 선택한다.
 
-#### 2) S3 버킷 생성 ####
-```
-BUCKET=vlm-data-${ACCOUNT_ID}-${REGION}
-echo "BUCKET=$BUCKET"
-
-aws s3api create-bucket \
-  --bucket $BUCKET \
-  --region $REGION \
-  --create-bucket-configuration LocationConstraint=$REGION
-```
-
-#### 3) GPU 드라이버 포함 AMI 조회 (SSM) ####
+#### 1) GPU 드라이버 포함 AMI 조회 (SSM) ####
 NVIDIA 드라이버 + Docker가 들어간 Deep Learning Base GPU AMI(Ubuntu 22.04)를 조회한다.
 ```
 AMI_ID=$(aws ssm get-parameter \
