@@ -1,7 +1,9 @@
 #### 1. 환경설정 ####
 ```
+export ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
 export REGION=ap-northeast-2
 export AZ=ap-northeast-2b
+export BUCKET=vlm-data-${ACCOUNT_ID}-${REGION}
 ```
 
 #### 2. VPC 생성하기 ####
@@ -90,11 +92,34 @@ aws ec2 authorize-security-group-ingress --region $REGION \
   --protocol tcp --port 22 --cidr ${MY_IP}/32
 ```
 
-#### 7. 결과정리 ####
+#### 7. S3 버킷 생성 ####
+```
+echo "BUCKET=$BUCKET"
+
+aws s3api create-bucket \
+  --bucket $BUCKET \
+  --region $REGION \
+  --create-bucket-configuration LocationConstraint=$REGION
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+#### 8. 결과정리 ####
 ```
 echo "VPC_ID=$VPC_ID"
 echo "SUBNET_ID=$SUBNET_ID   (--subnet-id 에 사용)"
 echo "SG_ID=$SG_ID           (--security-group-ids 에 사용)"
+echo "BUCKET=$BUCKET"
 ```
 
 [결과]
