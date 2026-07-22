@@ -19,6 +19,50 @@ AMI_ID=$(aws ssm get-parameter \
 echo $AMI_ID
 ```
 
+
+#### 3) 인스턴스 프로파일 생성 ####
+```
+cat > trust-policy.json <<'EOF'
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Effect": "Allow",
+    "Principal": { "Service": "ec2.amazonaws.com" },
+    "Action": "sts:AssumeRole"
+  }]
+}
+EOF
+
+aws iam create-role \
+  --role-name vlm-ec2-role \
+  --assume-role-policy-document file://trust-policy.json
+
+cat > s3-policy.json <<'EOF'
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket"],
+      "Resource": "arn:aws:s3:::my-vlm-data-bucket"
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:PutObject"],
+      "Resource": "arn:aws:s3:::my-vlm-data-bucket/*"
+    }
+  ]
+}
+EOF
+
+aws iam put-role-policy \
+  --role-name vlm-ec2-role \
+  --policy-name vlm-s3-access \
+  --policy-document file://s3-policy.json
+```
+
+
+
 #### 3) 인스턴스 생성 ####
 ```
 aws ec2 run-instances \
