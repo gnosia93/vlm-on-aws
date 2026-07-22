@@ -48,7 +48,7 @@ s3://$BUCKET/finevideo/sports/G_VTkkb34gw/
     ├── ...
     └── frames.json        # 이 영상의 프레임 목록 + 샘플링 설정
 ```
-#### frames.json (인퍼런스 단계의 입력 명세): ####
+frames.json (인퍼런스 단계의 입력 명세) 는 다음과 같습니다. 
 ```
 {
   "video_id": "G_VTkkb34gw",
@@ -65,18 +65,22 @@ s3://$BUCKET/finevideo/sports/G_VTkkb34gw/
 ```
 * sampling_config_hash를 넣어두면, 앞서 얘기한 캐싱/멱등성에 활용됩니다. 샘플링 설정이 바뀌면 해시가 달라져 재샘플링, 그대로면 스킵.
 
-### 2. ffmpeg 설치 (Graviton / aarch64) ###
+
+### 2. 영상 샘플링 하기 ###
+
+ffmpeg 을 그라비톤 인스턴스에 설치합니다.
 ```
 sudo apt update && sudo apt install -y ffmpeg
 ffmpeg -version
 ```
 
-### 3. 샘플링 스크립트 ###
+sample_frames.sh 스크립트 파일을 생성합니다. 
 ```
+cat > sample_frames.sh <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 
-BUCKET="vlm-data-499514681453-ap-northeast-2"
+BUCKET="$BUCKET"
 VIDEO_ID="$1"
 PREFIX="finevideo/sports/${VIDEO_ID}"
 N_FRAMES=16
@@ -99,17 +103,19 @@ aws s3 cp "${WORK}/frames/" "s3://${BUCKET}/${PREFIX}/frames/" --recursive
 
 # 4) 정리
 rm -rf "${WORK}"
+EOF
 ```
 
-xargs 를 이용하여 병렬 처리 합니다.
+xargs 를 이용하여 샘플링을 병렬로 처리 합니다.
 ```
+chmod +x sample_frames.sh
+
 aws s3 cp "s3://${BUCKET}/finevideo/sports/manifest.jsonl" - \
   | jq -r '.video_id' \
   | xargs -P 8 -I {} ./sample_frames.sh {}
 ```
 * -P 8 → 동시에 8개 프로세스 (코어 수에 맞춰 조정)
 * -I {} → video_id를 {} 자리에 넣어 호출
-
 
 > [!NOTE]
 > EKS에서는 이 스크립트를 컨테이너로 감싸 Graviton 노드풀의 K8s Job으로 돌리고, manifest.jsonl의 각 줄(video_id)을 여러 Job에 나눠 병렬 처리하면 됩니다.
@@ -136,8 +142,7 @@ aws s3 cp "s3://${BUCKET}/finevideo/sports/manifest.jsonl" - \
 > awk 'NR % n == k'가 핵심으로, 전체 줄 중 "줄번호를 shard 수로 나눈 나머지가 내 인덱스인 것"만 골라서, Pod마다 겹치지 않게 나눠 처리합니다.
 > ```
 
-
-### 4. 다음 단계(InternVL3-78B)와의 연결 ####
+### 4. InternVL3-78B 와의 연결 ####
 인퍼런스 단계는 이제 영상 원본이 아니라 frames/ 아래 JPG들 + frames.json만 읽으면 됩니다.
 
 * GPU 노드는 무거운 영상 디코딩을 할 필요가 없음 (Graviton이 이미 처리)
