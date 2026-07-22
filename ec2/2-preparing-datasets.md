@@ -26,7 +26,8 @@ export SUBNET_ID=$(aws ec2 describe-subnets --region $REGION \
 echo "REGION: $REGION"
 echo "ACCOUNT_ID: $ACCOUNT_ID"
 echo "SG_ID: $SG_ID"
-echo "SUBNET_ID: $SUBNET_ID" 
+echo "SUBNET_ID: $SUBNET_ID"
+echo "-------------------------------------"
 ```
 
 데이터 준비 단계에서는 네트워크 대역폭과 디스크 성능이 좋은 CPU 인스턴스가 필요하다.
