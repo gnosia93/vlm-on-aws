@@ -189,13 +189,40 @@ be8001762246: Downloading [===================================>               ] 
 117e97d3740c: Pull complete
 49ce6df6e942: Download complete
 87b4097c53c8: Pull complete
+
+INFO 07-22 03:06:58 config.py:510] This model supports multiple tasks: {'classify', 'score', 'reward', 'embed', 'generate'}. Defaulting to 'generate'.
+INFO 07-22 03:06:58 config.py:1310] Defaulting to use mp for distributed inference
+INFO 07-22 03:06:58 llm_engine.py:234] Initializing an LLM engine (v0.6.6.post1) with config: model='OpenGVLab/InternVL3-78B', speculative_config=None, tokenizer='OpenGVLab/InternVL3-78B', skip_tokenizer_init=False, tokenizer_mode=auto, revision=None, override_neuron_config=None, tokenizer_revision=None, trust_remote_code=True, dtype=torch.bfloat16, max_seq_len=8192, download_dir=None, load_format=LoadFormat.AUTO, tensor_parallel_size=4, pipeline_parallel_size=1, disable_custom_all_reduce=False, quantization=None, enforce_eager=False, kv_cache_dtype=auto, quantization_param_path=None, device_config=cuda, decoding_config=DecodingConfig(guided_decoding_backend='xgrammar'), observability_config=ObservabilityConfig(otlp_traces_endpoint=None, collect_model_forward_time=False, collect_model_execute_time=False), seed=0, served_model_name=OpenGVLab/InternVL3-78B, num_scheduler_steps=1, multi_step_stream_outputs=True, enable_prefix_caching=False, chunked_prefill_enabled=False, use_async_output_proc=True, disable_mm_preprocessor_cache=False, mm_processor_kwargs=None, pooler_config=None, compilation_config={"splitting_ops":["vllm.unified_attention","vllm.unified_attention_with_output"],"candidate_compile_sizes":[],"compile_sizes":[],"capture_sizes":[256,248,240,232,224,216,208,200,192,184,176,168,160,152,144,136,128,120,112,104,96,88,80,72,64,56,48,40,32,24,16,8,4,2,1],"max_capture_size":256}, use_cached_outputs=False,
+WARNING 07-22 03:06:59 multiproc_worker_utils.py:312] Reducing Torch parallelism from 96 threads to 1 to avoid unnecessary CPU contention. Set OMP_NUM_THREADS in the external environment to tune this value as needed.
+INFO 07-22 03:06:59 custom_cache_manager.py:17] Setting Triton cache manager to: vllm.triton_utils.custom_cache_manager:CustomCacheManager
+INFO 07-22 03:07:00 selector.py:120] Using Flash Attention backend.
+(VllmWorkerProcess pid=485) INFO 07-22 03:07:00 selector.py:120] Using Flash Attention backend.
+(VllmWorkerProcess pid=485) INFO 07-22 03:07:00 multiproc_worker_utils.py:222] Worker ready; awaiting tasks
+(VllmWorkerProcess pid=486) INFO 07-22 03:07:00 selector.py:120] Using Flash Attention backend.
+(VllmWorkerProcess pid=486) INFO 07-22 03:07:00 multiproc_worker_utils.py:222] Worker ready; awaiting tasks
+(VllmWorkerProcess pid=487) INFO 07-22 03:07:00 selector.py:120] Using Flash Attention backend.
+(VllmWorkerProcess pid=487) INFO 07-22 03:07:00 multiproc_worker_utils.py:222] Worker ready; awaiting tasks
+INFO 07-22 03:07:02 utils.py:918] Found nccl from library libnccl.so.2
+(VllmWorkerProcess pid=486) INFO 07-22 03:07:02 utils.py:918] Found nccl from library libnccl.so.2
+(VllmWorkerProcess pid=485) INFO 07-22 03:07:02 utils.py:918] Found nccl from library libnccl.so.2
+INFO 07-22 03:07:02 pynccl.py:69] vLLM is using nccl==2.21.5
+(VllmWorkerProcess pid=486) INFO 07-22 03:07:02 pynccl.py:69] vLLM is using nccl==2.21.5
+(VllmWorkerProcess pid=485) INFO 07-22 03:07:02 pynccl.py:69] vLLM is using nccl==2.21.5
+(VllmWorkerProcess pid=487) INFO 07-22 03:07:02 utils.py:918] Found nccl from library libnccl.so.2
+(VllmWorkerProcess pid=487) INFO 07-22 03:07:02 pynccl.py:69] vLLM is using nccl==2.21.5
+(VllmWorkerProcess pid=487) WARNING 07-22 03:07:03 custom_all_reduce.py:134] Custom allreduce is disabled because it's not supported on more than two PCIe-only GPUs. To silence this warning, specify disable_custom_all_reduce=True explicitly.
+(VllmWorkerProcess pid=486) WARNING 07-22 03:07:03 custom_all_reduce.py:134] Custom allreduce is disabled because it's not supported on more than two PCIe-only GPUs. To silence this warning, specify disable_custom_all_reduce=True explicitly.
+WARNING 07-22 03:07:03 custom_all_reduce.py:134] Custom allreduce is disabled because it's not supported on more than two PCIe-only GPUs. To silence this warning, specify disable_custom_all_reduce=True explicitly.
+(VllmWorkerProcess pid=485) WARNING 07-22 03:07:03 custom_all_reduce.py:134] Custom allreduce is disabled because it's not supported on more than two PCIe-only GPUs. To silence this warning, specify disable_custom_all_reduce=True explicitly.
+INFO 07-22 03:07:03 shm_broadcast.py:255] vLLM message queue communication handle: Handle(connect_ip='127.0.0.1', local_reader_ranks=[1, 2, 3], buffer_handle=(3, 4194304, 6, 'psm_b9a4caee'), local_subscribe_port=55397, remote_subscribe_port=None)
+INFO 07-22 03:07:03 model_runner.py:1094] Starting to load model OpenGVLab/InternVL3-78B...
+(VllmWorkerProcess pid=486) INFO 07-22 03:07:03 model_runner.py:1094] Starting to load model OpenGVLab/InternVL3-78B...
+(VllmWorkerProcess pid=485) INFO 07-22 03:07:03 model_runner.py:1094] Starting to load model OpenGVLab/InternVL3-78B...
+(VllmWorkerProcess pid=487) INFO 07-22 03:07:03 model_runner.py:1094] Starting to load model OpenGVLab/InternVL3-78B...
+INFO 07-22 03:07:03 weight_utils.py:251] Using model weights format ['*.safetensors']
+(VllmWorkerProcess pid=485) INFO 07-22 03:07:03 weight_utils.py:251] Using model weights format ['*.safetensors']
+(VllmWorkerProcess pid=486) INFO 07-22 03:07:03 weight_utils.py:251] Using model weights format ['*.safetensors']
+(VllmWorkerProcess pid=487) INFO 07-22 03:07:03 weight_utils.py:251] Using model weights format ['*.safetensors']
 ```
 
-
-#### 기대 동작 ####
-* 4장 GPU에 InternVL3-78B가 텐서 병렬로 로드됩니다 (로딩 수 분).
-* mock 이미지 3장에 대한 한국어 설명이 콘솔에 출력돼요. 예: "파란 배경 가운데 빨간 원이 있습니다" 같은 응답.
-* 이게 "한 대에서 78B가 4-GPU로 정상 로드되고 추론까지 되는지" 확인하는 가장 작은 검증판입니다.
-* 여기서 잘 돌면, 앞서 만든 S3 배치 버전으로 확장하는 건 입력을 mock에서 매니페스트로 바꾸기만 하면 돼요.
-* InternVL3-78B는 gated 모델일 수 있어서, 처음 받을 때 huggingface-cli login으로 토큰 인증이 필요할 수 있습니다.
   
