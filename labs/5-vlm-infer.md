@@ -58,10 +58,11 @@ flowchart TB
 
 * 6단계 — 병합 (merge) 두 샤드가 모두 끝나면, 작은 병합 작업이 shard-*.jsonl들을 하나로 합치고 중복/에러를 정리해 **최종 train.jsonl**을 만듭니다. 이게 정제 모델 학습에 바로 쓸 데이터예요.
 
-### 2. 소스 코드 (config / s3io / inference / worker / merge) ###
+### 2. 소스 코드 (inference / merge) ###
 
+* https://github.com/gnosia93/vlm-on-eks/blob/main/src/job_infer.py
 
-
+* https://github.com/gnosia93/vlm-on-eks/blob/main/src/job_merge.py
 
 ### 3. 컨테이너 이미지 빌드 ###
 
