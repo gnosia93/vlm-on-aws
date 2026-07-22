@@ -161,8 +161,8 @@ docker run --rm --gpus all --shm-size=16g \
   python simple_infer.py
 ```
 
-* -v ~/.cache/huggingface:...는 78B 가중치(약 150GB)를 한 번 받아 캐시해두는 용도예요. 처음 실행 때 HuggingFace에서 다운로드하느라 시간이 좀 걸립니다.
-
+* -v ~/.cache/huggingface:... 는 78B 가중치(약 150GB)를 한 번 받아 캐시해두는 위치로 처음 실행시 HuggingFace로 부터 다운로드 받는다.
+* -w /work 작업 디렉토리
 
 * 도커 없이 직접 실행하려면:
 ```
