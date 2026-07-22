@@ -111,3 +111,8 @@ if __name__ == "__main__":
     main()
 ```
 
+아래 명령어로 실행한다. 
+```
+export BUCKET=your-bucket-name
+python3 prepare_finevideo.py
+```
