@@ -97,5 +97,11 @@ echo "SUBNET_ID=$SUBNET_ID   (--subnet-id 에 사용)"
 echo "SG_ID=$SG_ID           (--security-group-ids 에 사용)"
 ```
 
+[결과]
+```
+VPC_ID=vpc-0d5138774d93063ad
+SUBNET_ID=subnet-01c84e439c1bd6dbc   (--subnet-id 에 사용)
+SG_ID=sg-093c1f88dbf1f229b           (--security-group-ids 에 사용)
+```
 
 
