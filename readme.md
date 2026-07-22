@@ -1,6 +1,6 @@
 # vlm-on-eks
 
-본 워크샵에서는 100B급 이상의 대규모 Vision-Language Model(VLM)을 teacher 모델로 활용해, 영상·이미지를 분석하고 1B급의 경량 정제(distilled) 모델을 구축하는 방법을 다룹니다.
+본 워크샵에서는 70B+ 급 이상의 대규모 Vision-Language Model(VLM)을 teacher 모델로 활용해, 영상·이미지를 분석하고 1B+ 급의 경량 정제(distilled) 모델을 구축하는 방법을 다룹니다.
 전체 ML 파이프라인은 다음 흐름으로 구성되며, 모든 단계는 Amazon EKS 위에서 동작합니다.
 
 ```
