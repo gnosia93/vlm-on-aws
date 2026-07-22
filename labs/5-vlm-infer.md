@@ -1,3 +1,6 @@
+
+### 컨테이너 이미지 빌드 ###
+
 * Dockerfile (s5cmd 추가)
 ```
 FROM vllm/vllm-openai:v0.6.6.post1
@@ -16,7 +19,10 @@ ENTRYPOINT []
 CMD ["python", "/app/src/run_worker.py"]
 ```
 
+vllm/vllm-openai:v0.6.6.post1 이미지에는 CUDA 유저스페이스 런타임과 cuDNN, PyTorch, vLLM, 그리고 번들된 NCCL을 비롯해 실행에 필요한 Python 의존성이 모두 포함되어 있다. 반면 EFA 스택은 들어있지 않아서 libfabric, aws-ofi-nccl 플러그인, EFA 커널 드라이버는 별도로 준비해야 하며, NVIDIA GPU 드라이버 역시 컨테이너에는 없고 호스트(노드)에 설치된 드라이버를 nvidia-container-runtime을 사용한다. 따라서 GPU를 쓰려면 GPU 지원 AMI와 NVIDIA device plugin이 노드에 미리 설치되어 있어야 하는데, EKS GPU 노드그룹을 사용한다면 이 부분은 기본으로 제공된다.
 
+
+### k8s Index Job ###
 
 Indexed Job은 completion 인덱스마다 새 파드가 뜨는데, 78B는 로딩만 몇 분씩 걸린다. 
 g7e에서 TP=4 파드 2대 동시 실행 구조로 completions를 잘게 쪼개지 않고 2로 설정한다. completions=8, parallelism=2로 설정하면 파드가 샤드 하나 끝낼 때마다 새 파드가 뜨면서 모델을 매번 다시 로드하기 때문이다. 그래서 completions=2 = parallelism=2 = NUM_SHARDS=2로 맞춰, 각 파드가 딱 한 번 로드하고 자기 절반을 끝까지 처리하게 한다. 
