@@ -214,10 +214,25 @@ aws --version
 echo "model weight loading in $BUCKET"
 aws s3 sync /mnt/data/internvl3-78b/ s3://${BUCKET}/models/internvl3-78b/
 
-aws s3 ls s3://vlm-data-499514681453-ap-northeast-2/models/internvl3-78b/
+aws s3 ls s3://${BUCKET}/models/internvl3-78b/
 ```
 [결과]
 ```
-
-
+                          PRE .cache/
+                           PRE examples/
+2026-07-22 16:51:34       1634 .gitattributes
+2026-07-22 16:51:34      35864 README.md
+2026-07-22 16:51:34        790 added_tokens.json
+2026-07-22 16:51:34       6346 config.json
+2026-07-22 16:51:34       5548 configuration_intern_vit.py
+2026-07-22 16:51:34       4036 configuration_internvl_chat.py
+2026-07-22 16:51:34      15309 conversation.py
+2026-07-22 16:51:34         69 generation_config.json
+2026-07-22 16:51:34    1671853 merges.txt
+2026-07-22 16:51:34 4988569440 model-00001-of-00033.safetensors
+2026-07-22 16:51:35 4937253584 model-00002-of-00033.safetensors
+2026-07-22 16:51:38 4903161648 model-00003-of-00033.safetensors
+2026-07-22 16:51:46 4781670848 model-00004-of-00033.safetensors
+2026-07-22 16:51:46 4781670848 model-00005-of-00033.safetensors
+...
 ```
