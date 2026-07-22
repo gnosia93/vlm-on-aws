@@ -24,3 +24,11 @@ aws ec2 run-instances \
   --block-device-mappings '[{"DeviceName":"/dev/sda1","Ebs":{"VolumeSize":1000,"VolumeType":"gp3"}}]' \
   ... (subnet, security-group 등)
 ```
+이스턴스로 접속한 후 ffmpeg 및 hf 패키지를 설치한다. 
+```
+sudo apt-get update && sudo apt-get install -y python3-pip ffmpeg
+pip install "datasets>=3.0" huggingface_hub hf_transfer boto3
+
+export HF_TOKEN=hf_xxxxxxxxxxxx
+export HF_HUB_ENABLE_HF_TRANSFER=1
+```
