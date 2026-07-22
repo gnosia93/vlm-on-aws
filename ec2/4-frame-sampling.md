@@ -68,6 +68,8 @@ s3://$BUCKET/finevideo/sports/G_VTkkb34gw/
   "sampling_config_hash": "a1b2c3"
 }
 ```
+* sampling_config_hash를 넣어두면, 앞서 얘기한 캐싱/멱등성에 활용됩니다. 샘플링 설정이 바뀌면 해시가 달라져 재샘플링, 그대로면 스킵.
+
 
 
 
