@@ -60,7 +60,26 @@
 - 영상 안에 특별한 사건이 없다면 actions와 qa를 빈 배열([])로 두고 confidence를 "low"로 설정하세요.
 ```
 
-> [!INFO]
+> [!NOTE]
+> HuggingFace transformers 직접 호출할 예정이므로 `[FRAME_1] ... [FRAME_N] (이미지 첨부)` 에는 픽셀 텐서로 넣는다.
+> ```
+> from PIL import Image
+> import torch
+> from transformers import AutoModel, AutoTokenizer
+> 
+> 프레임을 PIL로 로드
+> frames = [Image.open(f"frame_{i}.jpg") for i in range(8)]
+> 
+> InternVL 전용 전처리 (타일링 + 정규화)
+> pixel_values = torch.cat([load_image(f) for f in frames], dim=0)
+> # shape: (num_tiles, 3, 448, 448) — bfloat16, GPU
+> 
+> 프롬프트 안에서는 <image> 토큰이 이미지 자리를 표시
+> question = "<image>\n<image>\n...<image>\n" + user_prompt_text
+> 
+> response = model.chat(tokenizer, pixel_values, question, ...)
+> ```
+> 즉 프롬프트 문자열 안에는 <image> 같은 특수 토큰만 있고, 실제 픽셀은 별도 인자로 넘어간다.
 
 
 #### 3. Few-Shot 예시 (스타일 고정용, Optional) ####
