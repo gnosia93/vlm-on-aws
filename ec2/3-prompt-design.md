@@ -78,12 +78,12 @@ _아래는 위 순서를 밟아 작성한 1차 초안 샘플이다. 워크샵에
 > pixel_values = torch.cat([load_image(f) for f in frames], dim=0)
 > # shape: (num_tiles, 3, 448, 448) — bfloat16, GPU
 > 
-> # 프롬프트 안에서는 <image> 토큰이 이미지 자리를 표시
-> question = "<image>\n<image>\n...<image>\n" + user_prompt_text
+> # 프롬프트 안에서는 `<image>` 토큰이 이미지 자리를 표시
+> question = "`<image>\n<image>\n...<image>\n`" + user_prompt_text
 > 
 > response = model.chat(tokenizer, pixel_values, question, ...)
 > ```
-> 즉 프롬프트 문자열 안에는 <image> 같은 특수 토큰만 있고, 실제 픽셀은 별도 인자로 넘어간다.
+> 즉 프롬프트 문자열 안에는 `<image>` 같은 특수 토큰만 있고, 실제 픽셀은 별도 인자로 넘어간다.
 
 
 #### 3. Few-Shot 예시 (스타일 고정용, Optional) ####
