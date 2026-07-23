@@ -4,4 +4,4 @@
 * g7e.48xlarge - USD 40.74921
 * g6.48xlarge - USD 16.41595
 * g5.48xlarge - USD 20.02809
-* g4dn.12xlarge - USD 4.812
+* g4dn.12xlarge - USD 4.812 - NVIDIA T4 (개당 16 GiB GDDR6 VRAM) 4 EA
