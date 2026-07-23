@@ -69,10 +69,11 @@ frames.json (인퍼런스 단계의 입력 명세) 는 다음과 같습니다.
 
 ### 2. 영상 샘플링 하기 ###
 
-ffmpeg 을 그라비톤 인스턴스에 설치합니다.
+ffmpeg, jq 를 그라비톤 인스턴스에 설치합니다.
 ```
-sudo apt update && sudo apt install -y ffmpeg
+sudo apt update && sudo apt install -y ffmpeg jq
 ffmpeg -version
+jq --version
 ```
 
 sample_frames.sh 스크립트 파일을 생성합니다. 
@@ -115,8 +116,6 @@ export BUCKET=vlm-data-${ACCOUNT_ID}-${REGION}
 
 echo "\n-------------------------------------"
 echo "BUCKET: $BUCKET"
-
-sudo apt update && sudo apt install -y jq && jq --version
 ```
 
 xargs 를 이용하여 샘플링을 병렬로 처리 합니다.
