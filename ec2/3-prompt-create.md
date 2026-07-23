@@ -82,3 +82,11 @@
   "confidence": "high"
 }
 ```
+
+#### 4. 호출 파라미터 예시 ####
+
+* temperature: 0.3
+* top_p: 0.9
+* max_new_tokens: 1024
+* repetition_penalty: 1.05
+
