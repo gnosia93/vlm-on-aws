@@ -67,14 +67,14 @@
 > import torch
 > from transformers import AutoModel, AutoTokenizer
 > 
-> 프레임을 PIL로 로드
+> # 프레임을 PIL로 로드
 > frames = [Image.open(f"frame_{i}.jpg") for i in range(8)]
 > 
-> InternVL 전용 전처리 (타일링 + 정규화)
+> # InternVL 전용 전처리 (타일링 + 정규화)
 > pixel_values = torch.cat([load_image(f) for f in frames], dim=0)
 > # shape: (num_tiles, 3, 448, 448) — bfloat16, GPU
 > 
-> 프롬프트 안에서는 <image> 토큰이 이미지 자리를 표시
+> # 프롬프트 안에서는 <image> 토큰이 이미지 자리를 표시
 > question = "<image>\n<image>\n...<image>\n" + user_prompt_text
 > 
 > response = model.chat(tokenizer, pixel_values, question, ...)
