@@ -1,6 +1,6 @@
 # vlm-distillation
 
-본 워크샵에서는 70B+ 급 이상의 대규모 Vision-Language Model(VLM)을 teacher 모델로 활용해, 영상·이미지를 분석하고 1B+ 급의 경량 증류(distilled) 모델을 구축하는 방법을 다룹니다.
+본 워크샵에서는 70B+ 급 이상의 대규모 Vision-Language Model(VLM)을 teacher 모델로 활용해, 영상·이미지를 분석하고 1B 급의 경량 증류(distilled) 모델을 구축하는 방법을 다룹니다.
 전체 ML 파이프라인은 다음 흐름으로 구성됩니다. 
 ```
 S3 영상 → 전처리 → VLM 인퍼런스 → JSON 라벨 → 검수 → 학습 → 검증
