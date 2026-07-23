@@ -5,10 +5,14 @@
 그러면 16프레임 × 12타일 × 256토큰 → 폭발합니다.
 3. 프롬프트가 프레임별로 <image> 반복 — Frame1: <image>\nFrame2: <image>\n... 형태. 각 <image>가 256토큰으로 펼쳐집니다.
 
-### 입력 데이터 포맷 (data/train.jsonl) ###
+### 학습 데이터 포맷 (data/train.jsonl) ###
 
-jsonl 형식으로 한 줄은 하나의 영상 데이터를 의미하며 총 16개의 프레임과 질문(question), 답변(answer) 로 구성되어 있다. 
-이 데이터는 티처 모델로 부터 만들어낸 지식 증류 데이터이다. 
+JSONL 형식으로, 한 줄이 하나의 영상 데이터를 의미하며 16개의 프레임(frames), 질문(question), **답변(answer)**으로 구성된다.
+이 데이터는 티처 모델(InternVL3-78B)의 인퍼런스 결과로부터 만들어낸 지식 증류(distillation) 데이터이다.
+- frames — 영상에서 균등 샘플링한 16개 프레임 경로. 배열 순서가 곧 시간 순서다.
+- question — 티처에게 준 프롬프트 (학습 시 loss 마스킹).
+- answer — 티처가 생성한 응답 = student의 학습 정답 (이 부분만 loss 계산).
+
 ```
 {"frames": ["data/frames/vid001/f00.jpg", "data/frames/vid001/f01.jpg", "data/frames/vid001/f02.jpg", "...(총 16개)...",
 "data/frames/vid001/f15.jpg"], "question": "이 영상에서 무슨 일이 일어나는지 설명해줘.", "answer": "한 남성이 주방에서 재료를
