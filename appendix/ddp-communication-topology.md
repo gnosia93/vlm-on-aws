@@ -1,6 +1,6 @@
-# DDP 통신 토폴로지 정리
+## DDP 통신 토폴로지 정리 ##
 
-## 1. DDP가 통신하는 것 — gradient all-reduce
+### 1. DDP가 통신하는 것 — gradient all-reduce ###
 
 DDP는 각 GPU에 **모델을 통째로 복제**하고, 각자 다른 데이터 조각으로 forward/backward를 돈다. 통신은 딱 하나, **gradient를 all-reduce**(모든 GPU의 gradient를 합·평균해 다시 배포)뿐이다.
 
@@ -20,13 +20,13 @@ DDP는 각 GPU에 **모델을 통째로 복제**하고, 각자 다른 데이터 
   optimizer.step()  (모든 GPU가 동일 gradient로 갱신 → 가중치 동기 유지)
 ```
 
-## 2. 언제 통신하나 — 스텝(optimizer step)마다
+### 2. 언제 통신하나 — 스텝(optimizer step)마다 ###
 
 - **micro-batch(forward/backward)마다가 아니라, 가중치 갱신 직전에 1번**
 - gradient accumulation 중인 micro-batch 사이엔 통신 안 함(`no_sync`, 누적만)
 - → **accum을 키우면 스텝이 뜸해져 통신 빈도↓**
 
-## 3. ⭐ 통신량은 "모델 크기"에만 비례 — 배치와 무관
+### 3. ⭐ 통신량은 "모델 크기"에만 비례 — 배치와 무관 ###
 
 all-reduce하는 gradient의 크기는 **파라미터 수와 같다.** 배치가 1이든 128이든 gradient의 shape은 동일하므로 **통신량은 고정**이다.
 
@@ -45,7 +45,7 @@ all-reduce하는 gradient의 크기는 **파라미터 수와 같다.** 배치가
 
 오히려 배치를 키우면 같은 데이터셋의 **스텝 수가 줄어** all-reduce 횟수 감소 → **통신 오버헤드는 오히려 줄어든다.**
 
-## 4. ⭐ 노드(GPU)가 늘어도 GPU당 통신량은 상한이 있다
+### 4. ⭐ 노드(GPU)가 늘어도 GPU당 통신량은 상한이 있다 ###
 
 직관과 달리, GPU를 늘려도 **GPU 하나가 주고받는 양은 거의 안 늘어난다.** NCCL의 **ring all-reduce**가 그렇게 설계돼 있다.
 
@@ -70,7 +70,7 @@ GPU당 통신 배수 = 2(N-1)/N
 
 → 병목은 "GPU 하나가 감당하는 양"인데 그게 상한이 있으니, **GPU를 늘려도 선형에 가깝게 스케일**된다.
 
-## 5. 통신 경로(토폴로지) — 빠른 순 3단계 (노드 내부)
+### 5. 통신 경로(토폴로지) — 빠른 순 3단계 (노드 내부) ###
 
 ```
  [빠름] ────────────────────────────────────────────► [느림]
@@ -86,7 +86,7 @@ GPU당 통신 배수 = 2(N-1)/N
 - 클라우드/가상화에선 P2P가 막혀 **SYS(bounce)로 떨어질 수 있음** → `nvidia-smi topo -m`으로 확인
   (`NV#`=NVLink, `PIX/PXB`=PCIe, `SYS`=시스템 경유)
 
-## 6. 멀티노드 — 진짜 신경 쓸 곳은 노드 간 링크
+### 6. 멀티노드 — 진짜 신경 쓸 곳은 노드 간 링크 ###
 
 노드가 여러 개면 노드 내부(NVLink/PCIe)는 빠르지만 **node ↔ node는 네트워크**를 탄다.
 
@@ -101,7 +101,7 @@ GPU당 통신 배수 = 2(N-1)/N
 - 멀티노드에서 유일하게 신경 쓸 병목은 **노드 간 네트워크**
 - 그런데 **1B LoRA → gradient 수십 MB** → 노드 간이 좀 느려도 스텝당 수 ms, 계산(수백 ms~초) 대비 여전히 미미
 
-## 7. 결론 — 1B DDP엔 NVLink도, 고속 인터커넥트도 필수 아님
+### 7. 결론 — 1B DDP엔 NVLink도, 고속 인터커넥트도 필수 아님 ###
 
 ```
  스텝당 통신 시간 (all-reduce)        vs   스텝당 계산 시간 (16프레임 fwd+bwd)
@@ -117,6 +117,6 @@ GPU당 통신 배수 = 2(N-1)/N
 - NVLink·EFA가 값하는 건 **FSDP/TP로 모델을 쪼개거나, full fine-tune + 수십 노드**로 갈 때
 - (별개) **`/dev/shm`은 DataLoader worker용** — GPU 통신과 무관하지만 16프레임 텐서라 부족하면 학습이 죽음. num_workers 기준 2~8GB 확보
 
----
+### 결론 ##
 
-**핵심 한 줄:** DDP 통신량은 **모델 크기에만 비례**(배치·GPU 수 무관, GPU당 2×gradient 상한)하므로, 1B LoRA에서는 스텝마다 소량 gradient만 오가 **PCIe·일반 네트워크로도 선형 스케일**되고 NVLink·EFA는 필요 없다.
+DDP 통신량은 **모델 크기에만 비례**(배치·GPU 수 무관, GPU당 2×gradient 상한)하므로, 1B LoRA에서는 스텝마다 소량 gradient만 오가 **PCIe·일반 네트워크로도 선형 스케일**되고 NVLink·EFA는 필요 없다.
