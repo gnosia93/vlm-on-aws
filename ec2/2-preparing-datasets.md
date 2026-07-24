@@ -232,7 +232,8 @@ export PATH=$PATH:/home/ubuntu/.local/bin
 sudo mkdir -p /mnt/data
 sudo chown ubuntu:ubuntu /mnt/data
 
-hf download OpenGVLab/InternVL3-78B --local-dir /mnt/data/internvl3-78b
+# 캐시 구조(blobs/snapshots/refs)로 다운로드 — --local-dir 대신 HF_HOME 사용
+HF_HOME=/mnt/data/hf hf download OpenGVLab/InternVL3-78B
 
 sudo apt update && sudo apt install -y unzip
 curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"
@@ -241,10 +242,14 @@ sudo ./aws/install
 aws --version
 
 echo "model weight loading in $BUCKET"
-aws s3 sync /mnt/data/internvl3-78b/ s3://${BUCKET}/models/internvl3-78b/
+# hub/ 폴더째로, 심볼릭 링크는 실제 파일로 풀어서 업로드
+aws s3 sync /mnt/data/hf/hub/ s3://${BUCKET}/models/internvl3-78b/hub/ \
+  --follow-symlinks
 
-aws s3 ls s3://${BUCKET}/models/internvl3-78b/
+aws s3 ls s3://${BUCKET}/models/internvl3-78b/hub/
 ```
+
+
 [결과]
 ```
                           PRE .cache/
