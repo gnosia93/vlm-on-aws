@@ -101,7 +101,9 @@ The video concludes with a group of players celebrating on the field.
 
 ### 파인튜닝 전략 (Full vs. LoRA) 결정 ###
 
-#### 능력별 진단 (student 1B, zero-shot) ####
+_아래는 LLM Judbe 의 결과이다_
+
+#### 1. 능력별 진단 (student 1B, zero-shot) ####
 
 | 능력 | 결과 | 판정 |
 | :--- | :--- | :---: |
@@ -111,7 +113,7 @@ The video concludes with a group of players celebrating on the field.
 | **분류(sport)** | `cricket` 정답 | ✅ |
 | **언어 생성 (한국어)** | ❌ `temporal`·`action`이 영어로 나옴 | ⚠️ **문제** |
 
-#### 핵심 관찰 ####
+#### 2. 핵심 관찰 ####
 
 부족한 건 "이해"가 아니라 "한국어 출력"이에요.
 
@@ -125,22 +127,18 @@ The video concludes with a group of players celebrating on the field.
 
 #### 그래서 → LoRA ####
 
-```
-▎ "기본 능력이 갖춰져 있고 시간적 이해만 보완하면 되는 수준이면 LoRA, 정렬·시간 이해가 크게 부족해 폭넓게 재학습해야 하면 Full"
-
-student는 정렬·시간 이해가 이미 됨 → Full로 밑바닥부터 재학습할 이유가 없어요. 필요한 건 출력 스타일 교정(항상 한국어로, teacher 같은 톤/형식으로,
-환각·반복 억제)인데, 이건 LoRA가 가장 잘하는 영역이에요.
-
 LoRA를 권하는 이유:
+
 - 고칠 게 "행동/스타일"이지 "지식/능력"이 아님 → 어댑터로 충분
 - teacher 출력(크리켓 설명체)을 정답으로 하는 distillation 데이터로 LoRA 튜닝하면, 이미 있는 이해 능력이 한국어 서술로 흘러나오도록 정렬됨
 - 저렴/빠르고, 원본 능력(스코어보드 읽기 등)을 안 망가뜨림
 
-만약 Full이 필요했을 시나리오 (대비용)
+
+만약 Full이 필요했을 시나리오 (대비용):
 
 - student가 크리켓을 야구로 착각하거나, 스코어보드를 못 읽거나, temporal에서 프레임을 뒤섞어 순서가 엉켰다면 → 이해 자체가 안 되는 것 → Full 고려.
 - 지금은 그 반대예요. 이해는 하는데 표현만 안 맞음.
-```
+
 
 
 
