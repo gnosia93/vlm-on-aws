@@ -11,6 +11,21 @@ VLM이므로, 이 부분은 zero-shot으로 직접 확인해봐야 한다.
 ### zero-shot 테스트 ###
 
 
+실행
+```
+docker run --rm -it --gpus all --shm-size=16g \
+  -v $(pwd):/work -w /work \
+  -v /opt/dlami/nvme/hf-cache/models:/models \
+  -e PYTHONUNBUFFERED=1 \
+  -e BUCKET="$BUCKET" \
+  --entrypoint python3 \
+  vllm/vllm-openai:v0.6.6.post1 \
+  zeroshot_eval.py "$VIDEO_ID"
+```
+
+화면에 프롬프트 4개(caption/temporal/action/sport)의 응답이 출력된다. 특히 temporal 응답을 teacher(78B)의 크리켓 설명과 비교해보면 1B의 시간 이해 수준을 파악할 수 있다.
+
+
 아래 스크립트를 실행한다
 ```
 python test_student_zeroshot.py --data data/train.jsonl --n 5
