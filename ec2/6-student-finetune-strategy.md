@@ -101,7 +101,7 @@ The video concludes with a group of players celebrating on the field.
 
 ### 파인튜닝 전략 (Full vs. LoRA) 결정 ###
 
-_아래는 LLM Judbe 의 결과이다_
+**_아래는 LLM Judge 의 결과이다_**
 
 #### 1. 능력별 진단 (student 1B, zero-shot) ####
 
