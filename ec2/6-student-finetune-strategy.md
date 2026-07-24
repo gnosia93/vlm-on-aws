@@ -10,18 +10,18 @@ VLM이므로, 이 부분은 zero-shot으로 직접 확인해봐야 한다.
 
 ### 1. 인스턴스 접속하기 ###
 생성된 인스턴스를 조회하고, system manager를 이용하여 로그인한다.
-
+```
 INSTANCE=$(aws ssm describe-instance-information --region $REGION \
   --filters "Key=tag:Name,Values=model-infer" \
   --query "InstanceInformationList[].InstanceId" \
   --output text)
-  
 echo "INSTANCE: $INSTANCE"
 
 aws ssm start-session --target $INSTANCE --region $REGION
 
 sudo su ubuntu
 nvidia-smi --query-gpu=name --format=csv,noheader | awk 'END{print $0" * "NR}'
+```
 [결과]
 ```
 NVIDIA L40S * 8
