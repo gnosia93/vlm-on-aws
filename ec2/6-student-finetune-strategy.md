@@ -39,7 +39,7 @@ docker run --rm -it --gpus all --shm-size=16g \
 - 언어 생성: 자연스러운 한국어 서술
 
 
-### FUll vs Lora ###
+### 파인튜닝 전략 (Full vs. LoRA) 결정 ###
 
 teacher 와 student 의 두 결과를 비교해 보고 사람이 판단해야 한다 - 정성 평가(qualitative)
 
