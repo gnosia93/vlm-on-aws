@@ -255,28 +255,25 @@ hf download OpenGVLab/InternVL3-78B --local-dir /mnt/data/internvl3-78b
 echo "model weight loading in $BUCKET"
 aws s3 sync /mnt/data/internvl3-78b/ s3://${BUCKET}/models/internvl3-78b/
 
-# 확인
-aws s3 ls s3://${BUCKET}/models/internvl3-78b/
+# S3 확인
+aws s3 ls s3://${BUCKET}/models/internvl3-78b/ 2>/dev/null | head -n 15
 ```
-
 
 [결과]
 ```
-                          PRE .cache/
+                           PRE .cache/
                            PRE examples/
-2026-07-22 16:51:34       1634 .gitattributes
-2026-07-22 16:51:34      35864 README.md
-2026-07-22 16:51:34        790 added_tokens.json
-2026-07-22 16:51:34       6346 config.json
-2026-07-22 16:51:34       5548 configuration_intern_vit.py
-2026-07-22 16:51:34       4036 configuration_internvl_chat.py
-2026-07-22 16:51:34      15309 conversation.py
-2026-07-22 16:51:34         69 generation_config.json
-2026-07-22 16:51:34    1671853 merges.txt
-2026-07-22 16:51:34 4988569440 model-00001-of-00033.safetensors
-2026-07-22 16:51:35 4937253584 model-00002-of-00033.safetensors
-2026-07-22 16:51:38 4903161648 model-00003-of-00033.safetensors
-2026-07-22 16:51:46 4781670848 model-00004-of-00033.safetensors
-2026-07-22 16:51:46 4781670848 model-00005-of-00033.safetensors
-...
+2026-07-24 03:24:30       1634 .gitattributes
+2026-07-24 03:24:30      35864 README.md
+2026-07-24 03:24:30        790 added_tokens.json
+2026-07-24 03:24:30       6346 config.json
+2026-07-24 03:24:30       5548 configuration_intern_vit.py
+2026-07-24 03:24:30       4036 configuration_internvl_chat.py
+2026-07-24 03:24:30      15309 conversation.py
+2026-07-24 03:24:30         69 generation_config.json
+2026-07-24 03:24:30    1671853 merges.txt
+2026-07-24 03:24:30 4988569440 model-00001-of-00033.safetensors
+2026-07-24 03:24:32 4937253584 model-00002-of-00033.safetensors
+2026-07-24 03:24:37 4903161648 model-00003-of-00033.safetensors
+2026-07-24 03:24:37 4781670848 model-00004-of-00033.safetensors
 ```
