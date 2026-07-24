@@ -118,15 +118,14 @@ aws s3 sync s3://${BUCKET}/models/internvl3-78b/ /opt/dlami/nvme/hf-cache/hub/mo
 
 ### 4. 인퍼런스 하기 ###
 
-첫번째 영상 하나만 시범삼아 인퍼런스 해 본다. 
-```
-VIDEO_ID=$(aws s3 ls $BUCKET/finevideo/sports/ | head -n1 | awk '{print $NF}' | tr -d '/')
-```
-
+영상 하나만 인스턴스 해 본다.
 ```
 cd
 git clone https://github.com/gnosia93/vlm-distillation.git
 cd ~/vlm-distillation/src
+
+VIDEO_ID=$(aws s3 ls $BUCKET/finevideo/sports/ 2>/dev/null | head -n1 | awk '{print $NF}' | tr -d '/')
+echo $VIDEO_ID
 
 docker run --rm -it --gpus all --shm-size=16g \
   -v $(pwd):/work -w /work \
