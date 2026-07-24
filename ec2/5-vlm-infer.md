@@ -118,6 +118,11 @@ aws s3 sync s3://${BUCKET}/models/internvl3-78b/ /opt/dlami/nvme/hf-cache/hub/mo
 
 ### 4. 인퍼런스 하기 ###
 
+첫번째 영상 하나만 시범삼아 인퍼런스 해 본다. 
+```
+VIDEO_ID=$(aws s3 ls $BUCKET/finevideo/sports/ | head -n1 | awk '{print $NF}' | tr -d '/')
+```
+
 ```
 cd
 git clone https://github.com/gnosia93/vlm-distillation.git
@@ -130,7 +135,7 @@ docker run --rm -it --gpus all --shm-size=16g \
   -e BUCKET="$BUCKET" \
   --entrypoint python3 \
   vllm/vllm-openai:v0.6.6.post1 \
-  s3_infer.py
+  s3_infer.py $VIDEO_ID "이 영상을 한국어로 설명해줘."
 ```
 > [!NOTE]
 > * -v /opt/dlami/nvme/hf-cache:/root/.cache/huggingface 에서 /opt/dlami/nvme/hf-cache 는 호스트 경로이고 /root/.cache/huggingface 는 컨테이너 경로이다. 호스트 경로에 있는 모델 가중치를 컨테이너에서 실행되는 모델에서 읽어간다.    
