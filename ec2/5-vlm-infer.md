@@ -97,7 +97,7 @@ export BUCKET=vlm-data-${ACCOUNT_ID}-${REGION}
 echo "\n-------------------------------------"
 echo "BUCKET: $BUCKET"
 
-aws s3 sync s3://${BUCKET}/models/internvl3-78b/ /opt/dlami/nvme/hf-cache/hub/ 
+aws s3 sync s3://${BUCKET}/models/internvl3-78b/ /opt/dlami/nvme/hf-cache/hub/models--OpenGVLab--InternVL3-78B/ 
 ```
 
 모델 가중치를 저장하는 hf-cache 디렉토리 구조는 아래와 같다.
