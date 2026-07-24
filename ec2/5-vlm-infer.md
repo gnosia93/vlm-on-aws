@@ -136,7 +136,23 @@ docker run --rm -it --gpus all --shm-size=16g \
 
 ```
 
-
+### 5. S3 로 업로드 된 인퍼런스 결과 확인하기 ###
+S3에 저장된 파일(a1b2c3d4e5f6.json) 내용
+```
+  {
+    "video_id": "G_VTkkb34gw",
+    "model": "OpenGVLab/InternVL3-78B",
+    "prompt": "스포츠 종목과 주요 동작을 한국어로 설명해줘.",
+    "answer": "16장의 프레임을 보면 실내 코트에서 진행되는 농구 경기로...",
+    "run_id": "a1b2c3d4e5f6",
+    "created_at": "2026-07-24T05:12:33.123456+00:00",
+    "sampling_params": { "temperature": 0.2, "top_p": 0.9, "max_tokens": 512 },
+    "frames_ref": {
+      "num_frames": 16, "frame_size": "448x448",
+      "sampling": "uniform", "sampling_config_hash": "a1b2c3"
+    }
+  }
+```
 
 ## 인스턴스 삭제 ##
 ```
