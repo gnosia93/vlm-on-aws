@@ -250,10 +250,12 @@ sudo chown ubuntu:ubuntu /mnt/data
 
 # flat 구조로 다운로드
 hf download OpenGVLab/InternVL3-78B --local-dir /mnt/data/internvl3-78b
+hf download OpenGVLab/InternVL3-1B --local-dir /mnt/data/internvl3-1b
 
 # S3에 업로드 (flat 그대로)
 echo "model weight loading in $BUCKET"
 aws s3 sync /mnt/data/internvl3-78b/ s3://${BUCKET}/models/internvl3-78b/
+aws s3 sync /mnt/data/internvl3-1b/ s3://${BUCKET}/models/internvl3-1b/
 
 # S3 확인
 aws s3 ls s3://${BUCKET}/models/internvl3-78b/ 2>/dev/null | head -n 15
