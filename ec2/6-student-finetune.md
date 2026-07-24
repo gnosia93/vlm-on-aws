@@ -101,11 +101,9 @@ bf16 가중치 사용시 약 2GB 메모리가 필요하다 (1B * 2 bytes)
 위 수치는 시퀀스 길이 4.5K, gradient_checkpointing 미적용 기준의 대략치다. 실제 값은 프레임 수·답변 길이·구현에 따라 ±30% 오차가 있다.
 
 
-## 훈련하기 ##
-
-
+## 파인 튜닝하기 ##
 ```
-git clone https://github.com/gnosia93/vlm-on-aws.git
+git clone https://github.com/gnosia93/vlm-distillation.git
 cd vlm-on-aws/src
 
 python train_student.py --data data/train.jsonl --out out/student-ft --bs 4 --accum 2
