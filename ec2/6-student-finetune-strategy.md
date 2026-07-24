@@ -39,4 +39,11 @@ docker run --rm -it --gpus all --shm-size=16g \
 - 언어 생성: 자연스러운 한국어 서술
 
 
+### FUll vs Lora ###
+
+teacher 와 student 의 두 결과를 비교해 보고 사람이 판단해야 한다 - 정성 평가(qualitative)
+
+
+
+
 
