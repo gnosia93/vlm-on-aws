@@ -16,11 +16,26 @@
 ### 1. GPU 인스턴스 생성하기 ###
 인스턴스에 필요한 정보를 설정한다. 여기서는 48GB * 8 장을 지원하는 g6e.48xlarge 를 선택한다.(VRAM 48GB * 8 = 384 GB)
 ```
-export ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
 export REGION=ap-northeast-2
-export SG_ID=$SG_ID
-export SUBNET_ID=$SUBNET_ID
+export ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
+export SG_ID=$(aws ec2 describe-security-groups --region $REGION \
+  --filters "Name=group-name,Values=vlm-sg" \
+  --query "SecurityGroups[].GroupId" \
+  --output text)
+export SUBNET_ID=$(aws ec2 describe-subnets --region $REGION \
+  --filters "Name=tag:Name,Values=vlm-public-subnet" \
+  --query "Subnets[0].SubnetId" \
+  --output text)
+export BUCKET=vlm-data-${ACCOUNT_ID}-${REGION}
 export INSTANCE_TYPE=g6e.48xlarge
+
+echo "\n-------------------------------------"
+echo "REGION: $REGION"
+echo "ACCOUNT_ID: $ACCOUNT_ID"
+echo "SG_ID: $SG_ID"
+echo "SUBNET_ID: $SUBNET_ID"
+echo "BUCKET: $BUCKET"
+echo "INSTANCE_TYPE: $INSTANCE_TYPE"
 ```
 
 NVIDIA 드라이버 + Docker가 들어간 Deep Learning Base GPU AMI(Ubuntu 22.04)를 조회한다.
@@ -31,7 +46,7 @@ AMI_ID=$(aws ssm get-parameter \
   --query 'Parameter.Value' --output text)
 echo $AMI_ID
 ```
-인스턴스를 생성한다.
+GPU 인스턴스를 생성한다.
 ```
 aws ec2 run-instances \
   --region $REGION \
@@ -48,13 +63,6 @@ aws ec2 run-instances \
 * CPU 쿼터: 계정의 "Running On-Demand G instances" 쿼터가 부족하면 생성이 실패할 수 있으니, Service Quotas 를 확인한다. 
 * 용량 부족(InsufficientInstanceCapacity): 최신 GPU 인스턴스의 경우 AZ에 물량이 없을 수 있다. 이럴 땐 AZ를 바꾸거나 온디맨드 용량 예약(ODCR)을 활용한다.
 
-> [!TIP]
-> 생성된 인스턴스의 퍼블릭 IP 를 확인한다. 
-> ```
-> aws ec2 describe-instances --region $REGION \
->   --filters "Name=tag:Name,Values=internvl3-infer" "Name=instance-state-name,Values=running" \
->   --query 'Reservations[].Instances[].PublicIpAddress' --output text
-> ```
 
 ### 2. 인스턴스 접속하기 ###
 system manager 를 이용하여 인스턴스에 접속 한다. 클라이이언트가 맥 os 인 경우 플러그인을 설치가 필요하다. 
