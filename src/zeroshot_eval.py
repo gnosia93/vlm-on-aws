@@ -73,7 +73,7 @@ def main() -> None:
 
     tokenizer = AutoTokenizer.from_pretrained(MODEL, trust_remote_code=True)
 
-    num_gpus = torch.cuda.device_count()
+    num_gpus = 1
     llm = LLM(
         model=MODEL,
         tensor_parallel_size=num_gpus,
