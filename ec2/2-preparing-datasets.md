@@ -259,6 +259,7 @@ aws s3 sync /mnt/data/internvl3-1b/ s3://${BUCKET}/models/internvl3-1b/
 
 # S3 확인
 aws s3 ls s3://${BUCKET}/models/internvl3-78b/ 2>/dev/null | head -n 15
+aws s3 ls s3://${BUCKET}/models/internvl3-1b/ 2>/dev/null | head -n 15
 ```
 
 [결과]
