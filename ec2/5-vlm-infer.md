@@ -300,23 +300,39 @@ INFO 07-23 20:50:22 multiproc_worker_utils.py:140] Terminating local vLLM worker
 ```
 
 ### 5. S3 로 업로드 된 인퍼런스 결과 확인하기 ###
-S3에 저장된 파일(a1b2c3d4e5f6.json) 내용
+
 ```
-  {
-    "video_id": "G_VTkkb34gw",
-    "model": "OpenGVLab/InternVL3-78B",
-    "prompt": "스포츠 종목과 주요 동작을 한국어로 설명해줘.",
-    "answer": "16장의 프레임을 보면 실내 코트에서 진행되는 농구 경기로...",
-    "run_id": "a1b2c3d4e5f6",
-    "created_at": "2026-07-24T05:12:33.123456+00:00",
-    "sampling_params": { "temperature": 0.2, "top_p": 0.9, "max_tokens": 512 },
-    "frames_ref": {
-      "num_frames": 16, "frame_size": "448x448",
-      "sampling": "uniform", "sampling_config_hash": "a1b2c3"
-    }
-  }
+aws s3 cp "s3://vlm-data-499514681453-ap-northeast-2/finevideo/sports/09buIj5Z5lk/inference/042dd539417d.json" - | jq
 ```
 
+[결과]
+```
+{
+  "video_id": "09buIj5Z5lk",
+  "model": "/models/internvl3-78b",
+  "prompt": "이 영상을 한국어로 설명해줘.",
+  "answer": "이 영상은 크리켓 경기의 한 장면을 보여줍니다. 파키스탄이 104/1로 경기를 진행 중이며, 목표점은 288점입니다. 투수는 라즈 아흐메드가 등판하고 있습니다. 타자는 공을 치고 뛰기 시작하지만, 수비수들이 빠르게 반응하여 아웃을 성공합니다. 이후 다른 타자가 등장하여 공을 치지만, 또다시 아웃됩니다. 팀원들이 기뻐하며 축하합니다.",
+  "run_id": "042dd539417d",
+  "created_at": "2026-07-24T03:50:22.388737+00:00",
+  "sampling_params": {
+    "temperature": 0.2,
+    "top_p": 0.9,
+    "max_tokens": 512
+  },
+  "frames_ref": {
+    "num_frames": 16,
+    "frame_size": "448x448",
+    "sampling": "uniform",
+    "sampling_config_hash": "d587a6"
+  }
+}
+```
+
+## TODO ##
+
+* s3 에 저장된 전체 목록에 대해서 병렬로 배치 인퍼런스 하는 코드를 만들어야 한다.
+* 3장에서 만든 프롬프트 기반으로 출력 json 포맷을 수정해야 한다.
+  
 ## 인스턴스 삭제 ##
 ```
 aws ec2 terminate-instances --instance-ids $INSTANCE --region $REGION
